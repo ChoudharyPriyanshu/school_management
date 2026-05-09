@@ -1,11 +1,3 @@
-// ============================================================
-// server.js — Application Entry Point
-// ============================================================
-// Initializes Express, loads environment variables, applies
-// middleware, mounts routes, and starts the HTTP server.
-// ============================================================
-
-// Load environment variables from .env file (must be first)
 require("dotenv").config();
 
 const express = require("express");
@@ -13,17 +5,13 @@ const cors = require("cors");
 const schoolRoutes = require("./routes/schoolRoutes");
 const db = require("./db");
 
-// Initialize Express application
 const app = express();
 
-// ---- Middleware ----
-app.use(cors());            // Enable Cross-Origin Resource Sharing
-app.use(express.json());    // Parse incoming JSON request bodies
+app.use(cors());
+app.use(express.json());
 
-// ---- Routes ----
 app.use("/", schoolRoutes);
 
-// ---- Health Check ----
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -31,8 +19,6 @@ app.get("/", (req, res) => {
   });
 });
 
-// ---- 404 Handler ----
-// Catches requests to undefined routes
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -40,19 +26,15 @@ app.use((req, res) => {
   });
 });
 
-// ---- Start Server ----
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, async () => {
-  console.log(`\n🚀  Server is running on port ${PORT}`);
-  console.log(`📡  API Base URL: http://localhost:${PORT}\n`);
+  console.log(`Server is running on port ${PORT}`);
 
-  // Verify database connection on startup
   try {
     await db.execute("SELECT 1");
-    console.log("✅  MySQL database connected successfully.\n");
+    console.log("Database connected successfully.");
   } catch (error) {
-    console.error("❌  MySQL connection failed:", error.message);
-    console.error("    Please check your .env configuration and ensure MySQL is running.\n");
+    console.error("Database connection failed:", error.message);
   }
 });
