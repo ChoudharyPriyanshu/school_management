@@ -1,0 +1,185 @@
+{
+	"info": {
+		"_postman_id": "school-management-api-collection",
+		"name": "School Management API",
+		"description": "REST API collection for School Management System. Includes endpoints to add schools and list them sorted by proximity.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add School",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"ABC School\",\n  \"address\": \"Delhi\",\n  \"latitude\": 28.6139,\n  \"longitude\": 77.2090\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/addSchool",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "5000",
+					"path": ["addSchool"]
+				},
+				"description": "Add a new school to the database.\n\n**Required Fields:**\n- name (string)\n- address (string)\n- latitude (number, -90 to 90)\n- longitude (number, -180 to 180)"
+			},
+			"response": [
+				{
+					"name": "Success - School Added",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"ABC School\",\n  \"address\": \"Delhi\",\n  \"latitude\": 28.6139,\n  \"longitude\": 77.2090\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/addSchool",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "5000",
+							"path": ["addSchool"]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"body": "{\n  \"success\": true,\n  \"message\": \"School added successfully.\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"ABC School\",\n    \"address\": \"Delhi\",\n    \"latitude\": 28.6139,\n    \"longitude\": 77.209\n  }\n}"
+				},
+				{
+					"name": "Error - Missing Fields",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"ABC School\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/addSchool",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "5000",
+							"path": ["addSchool"]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"body": "{\n  \"success\": false,\n  \"message\": \"All fields are required: name, address, latitude, longitude.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "List Schools by Proximity",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/listSchools?latitude=28.6139&longitude=77.2090",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "5000",
+					"path": ["listSchools"],
+					"query": [
+						{
+							"key": "latitude",
+							"value": "28.6139",
+							"description": "User's latitude"
+						},
+						{
+							"key": "longitude",
+							"value": "77.2090",
+							"description": "User's longitude"
+						}
+					]
+				},
+				"description": "Fetch all schools sorted by distance from the given coordinates.\n\n**Required Query Parameters:**\n- latitude (number, -90 to 90)\n- longitude (number, -180 to 180)"
+			},
+			"response": [
+				{
+					"name": "Success - Schools Listed",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/listSchools?latitude=28.6139&longitude=77.2090",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "5000",
+							"path": ["listSchools"],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "28.6139"
+								},
+								{
+									"key": "longitude",
+									"value": "77.2090"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"body": "{\n  \"success\": true,\n  \"message\": \"Schools fetched and sorted by proximity.\",\n  \"count\": 3,\n  \"data\": [\n    {\n      \"id\": 2,\n      \"name\": \"St. Xavier's School\",\n      \"address\": \"Connaught Place, New Delhi\",\n      \"latitude\": 28.6315,\n      \"longitude\": 77.2167,\n      \"distance\": 2.08\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Modern School\",\n      \"address\": \"Barakhamba Road, New Delhi\",\n      \"latitude\": 28.6328,\n      \"longitude\": 77.2264,\n      \"distance\": 2.65\n    },\n    {\n      \"id\": 1,\n      \"name\": \"Delhi Public School\",\n      \"address\": \"Mathura Road, New Delhi\",\n      \"latitude\": 28.5672,\n      \"longitude\": 77.241,\n      \"distance\": 5.91\n    }\n  ]\n}"
+				},
+				{
+					"name": "Error - Missing Parameters",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/listSchools",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "5000",
+							"path": ["listSchools"]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"body": "{\n  \"success\": false,\n  \"message\": \"Query parameters 'latitude' and 'longitude' are required.\"\n}"
+				}
+			]
+		}
+	]
+}

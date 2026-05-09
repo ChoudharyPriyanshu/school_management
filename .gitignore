@@ -1,0 +1,4 @@
+node_modules/
+.env
+SETUP_GUIDE.md
+schema.sql
